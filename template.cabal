@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: a8a8c3e239527497e8755a73ac129915cd4ff92e00c65fb90d4fb590d4daa542
+-- hash: 49c2c58019f085f011f0f78038b11746b9caa517d8c8ce33b663ad975af7fabd
 
 name:                template
 version:             0.0.0.0
@@ -16,6 +16,7 @@ library
     Lib
   other-modules:
     Arrow
+    Lisp
     Paths_template
   default-language: Haskell2010
   hs-source-dirs:
@@ -40,6 +41,7 @@ executable template
   other-modules:
     Arrow
     Lib
+    Lisp
     Paths_template
   build-depends:
     base >=4.12.0.0,
@@ -54,8 +56,10 @@ test-suite spec
   other-modules:
     ArrowSpec
     LibSpec
+    LispSpec
     Arrow
     Lib
+    Lisp
     Paths_template
   hs-source-dirs:
     test
