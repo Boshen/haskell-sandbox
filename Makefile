@@ -15,5 +15,8 @@ run:
 test:
 	cabal new-run spec
 
+ci:
+	cabal new-update && make test
+
 nix:
 	hpack && cabal2nix . > project.nix

@@ -1,0 +1,10 @@
+sudo: true
+
+language: nix
+
+before_install: nix-env --install --attr nixpkgs.cabal-install
+script: nix-shell --run "make ci"
+
+cache:
+  directories:
+  - $HOME/dist-newstyle
