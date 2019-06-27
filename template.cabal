@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 49c2c58019f085f011f0f78038b11746b9caa517d8c8ce33b663ad975af7fabd
+-- hash: 821065ba07331d3ab64fcd9b50e34b585d93bf521dd4b51b1905eddde2e37b0d
 
 name:                template
 version:             0.0.0.0
@@ -16,6 +16,7 @@ library
     Lib
   other-modules:
     Arrow
+    ImageProcessing
     Lisp
     Paths_template
   default-language: Haskell2010
@@ -25,10 +26,12 @@ library
   ghc-options: -Wall
   build-depends:
     base >=4.12.0.0,
+    comonad,
     foundation >=0.0.23,
     mtl,
     parsec,
-    text
+    text,
+    vector
 
 executable template
   default-language: Haskell2010
@@ -40,24 +43,29 @@ executable template
   ghc-options: -Wall -threaded -rtsopts -with-rtsopts=-N
   other-modules:
     Arrow
+    ImageProcessing
     Lib
     Lisp
     Paths_template
   build-depends:
     base >=4.12.0.0,
+    comonad,
     foundation >=0.0.23,
     mtl,
     parsec,
-    text
+    text,
+    vector
 
 test-suite spec
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
     ArrowSpec
+    ImageProcessingSpec
     LibSpec
     LispSpec
     Arrow
+    ImageProcessing
     Lib
     Lisp
     Paths_template
@@ -70,9 +78,11 @@ test-suite spec
     hspec-discover:hspec-discover
   build-depends:
     base >=4.12.0.0,
+    comonad,
     foundation >=0.0.23,
     hspec,
     mtl,
     parsec,
-    text
+    text,
+    vector
   default-language: Haskell2010
