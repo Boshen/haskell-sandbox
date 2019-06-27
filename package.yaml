@@ -15,6 +15,9 @@ dependencies:
   - parsec
   - vector
   - comonad
+  - repa
+  - repa-devil
+  - colour
 
 library:
   source-dirs: lib

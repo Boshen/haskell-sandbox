@@ -2,7 +2,7 @@ module Main(main) where
 
 import           Foundation
 
-import           Lib
+import qualified MandelbrotMain
 
 main :: IO ()
-main = putStrLn foo
+main = MandelbrotMain.main
