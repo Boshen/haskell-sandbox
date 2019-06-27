@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 821065ba07331d3ab64fcd9b50e34b585d93bf521dd4b51b1905eddde2e37b0d
+-- hash: 296cb33a5dffd9ec8d556a23d02f757b4b874aac798df721b511233d15492e04
 
 name:                template
 version:             0.0.0.0
@@ -18,6 +18,7 @@ library
     Arrow
     ImageProcessing
     Lisp
+    ParserCombinator
     Paths_template
   default-language: Haskell2010
   hs-source-dirs:
@@ -46,6 +47,7 @@ executable template
     ImageProcessing
     Lib
     Lisp
+    ParserCombinator
     Paths_template
   build-depends:
     base >=4.12.0.0,
@@ -64,10 +66,12 @@ test-suite spec
     ImageProcessingSpec
     LibSpec
     LispSpec
+    ParserCombinatorSpec
     Arrow
     ImageProcessing
     Lib
     Lisp
+    ParserCombinator
     Paths_template
   hs-source-dirs:
     test
