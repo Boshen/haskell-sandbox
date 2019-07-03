@@ -1,5 +1,5 @@
 { mkDerivation, base, comonad, foundation, hpack, hspec
-, hspec-discover, mtl, parsec, stdenv, text, vector
+, hspec-discover, megaparsec, mtl, parsec, stdenv, text, vector
 }:
 mkDerivation {
   pname = "template";
@@ -8,14 +8,14 @@ mkDerivation {
   isLibrary = true;
   isExecutable = true;
   libraryHaskellDepends = [
-    base comonad foundation mtl parsec text vector
+    base comonad foundation megaparsec mtl parsec text vector
   ];
   libraryToolDepends = [ hpack ];
   executableHaskellDepends = [
-    base comonad foundation mtl parsec text vector
+    base comonad foundation megaparsec mtl parsec text vector
   ];
   testHaskellDepends = [
-    base comonad foundation hspec mtl parsec text vector
+    base comonad foundation hspec megaparsec mtl parsec text vector
   ];
   testToolDepends = [ hspec-discover ];
   preConfigure = "hpack";

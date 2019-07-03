@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 296cb33a5dffd9ec8d556a23d02f757b4b874aac798df721b511233d15492e04
+-- hash: 453631dc0ff0f0863530d044c7523232a26228505f5cce4d2b70756f9ae06ca2
 
 name:                template
 version:             0.0.0.0
@@ -16,6 +16,7 @@ library
     Lib
   other-modules:
     Arrow
+    Brainfuck
     ImageProcessing
     Lisp
     ParserCombinator
@@ -29,6 +30,7 @@ library
     base >=4.12.0.0,
     comonad,
     foundation >=0.0.23,
+    megaparsec,
     mtl,
     parsec,
     text,
@@ -44,6 +46,7 @@ executable template
   ghc-options: -Wall -threaded -rtsopts -with-rtsopts=-N
   other-modules:
     Arrow
+    Brainfuck
     ImageProcessing
     Lib
     Lisp
@@ -53,6 +56,7 @@ executable template
     base >=4.12.0.0,
     comonad,
     foundation >=0.0.23,
+    megaparsec,
     mtl,
     parsec,
     text,
@@ -63,11 +67,13 @@ test-suite spec
   main-is: Spec.hs
   other-modules:
     ArrowSpec
+    BrainfuckSpec
     ImageProcessingSpec
     LibSpec
     LispSpec
     ParserCombinatorSpec
     Arrow
+    Brainfuck
     ImageProcessing
     Lib
     Lisp
@@ -85,6 +91,7 @@ test-suite spec
     comonad,
     foundation >=0.0.23,
     hspec,
+    megaparsec,
     mtl,
     parsec,
     text,
