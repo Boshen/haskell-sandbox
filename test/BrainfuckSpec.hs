@@ -2,6 +2,7 @@ module BrainfuckSpec(spec) where
 
 import           Foundation
 
+import           Data.Char
 import           Test.Hspec
 import           Text.Megaparsec
 
@@ -25,3 +26,11 @@ spec =
       it "should loop" $ do
         interpret emptyTape "+++[-.]" `shouldBe` [2, 1, 0]
         interpret (Tape [] 1 [1]) "[->+<]>." `shouldBe` [2]
+        interpret (Tape [] 1 [1]) "[->+<]>." `shouldBe` [2]
+
+      it "should run hello world" $
+        let
+          source = "++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++."
+          result = chr <$> interpret emptyTape source
+        in
+          result `shouldBe` "Hello World!\n"
