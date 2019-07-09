@@ -16,16 +16,16 @@ import           Text.Megaparsec.Char
   https://github.com/quchen/articles/blob/master/write_yourself_a_brainfuck.md
   https://github.com/paraseba/haskell-brainfuck/blob/master/src/HaskBF/Parser.hs
 --}
-
-data Command = MoveRight      -- >
-             | MoveLeft       -- <
-             | Increment      -- +
-             | Decrement      -- -
-             | Print          -- .
-             | Read           -- ,
-             | Loop [Command] -- [ ]
-             | Comment Char
-             deriving (Eq, Show)
+data Command
+  = MoveRight -- >
+  | MoveLeft -- <
+  | Increment -- +
+  | Decrement -- -
+  | Print -- .
+  | Read -- ,
+  | Loop [Command] -- [ ]
+  | Comment Char
+  deriving (Eq, Show)
 
 type Source = [Command]
 
@@ -34,7 +34,6 @@ type Parser = Parsec Void Text
 {--
   Parser
 --}
-
 parser :: Parser Source
 parser = many op
 
@@ -48,52 +47,60 @@ loop :: Parser Command
 loop = Loop <$> between (char '[') (char ']') parser
 
 command :: Parser Command
-command = choice [ char '>' >> return MoveRight
-                 , char '<' >> return MoveLeft
-                 , char '+' >> return Increment
-                 , char '-' >> return Decrement
-                 , char '.' >> return Print
-                 , char ',' >> return Read
-                 ]
+command =
+  choice
+    [ char '>' >> return MoveRight
+    , char '<' >> return MoveLeft
+    , char '+' >> return Increment
+    , char '-' >> return Decrement
+    , char '.' >> return Print
+    , char ',' >> return Read
+    ]
 
 {--
    Interpreter
 --}
-
-data Tape a = Tape [a] a [a] deriving (Show)
+data Tape a =
+  Tape [a] a [a]
+  deriving (Show)
 
 emptyTape :: Tape Int
 emptyTape = Tape zeroes 0 zeroes
-  where zeroes = repeat 0
+  where
+    zeroes = repeat 0
 
 moveRight :: Tape a -> Tape a
-moveRight (Tape ls n (r:rs)) = Tape (n:ls) r rs
+moveRight (Tape ls n (r:rs)) = Tape (n : ls) r rs
 moveRight tp                 = tp
 
 moveLeft :: Tape a -> Tape a
-moveLeft (Tape (l:ls) n rs) = Tape ls l (n:rs)
+moveLeft (Tape (l:ls) n rs) = Tape ls l (n : rs)
 moveLeft tp                 = tp
 
 rewind :: Tape a -> Tape a
-rewind (Tape l n r) = let (x:xs) = reverse (n:l) in Tape [] x (xs ++ r)
+rewind (Tape l n r) =
+  let (x:xs) = reverse (n : l)
+   in Tape [] x (xs ++ r)
 
 getPivot :: Tape a -> a
 getPivot (Tape _ n _) = n
 
-newtype StateState = StateState
-  { tape      :: Tape Int
-  }
+newtype StateState =
+  StateState
+    { tape :: Tape Int
+    }
 
 type WriterState = [Int]
 
 type BFState = StateT StateState (Writer WriterState) ()
 
 interpret :: Tape Int -> Text -> [Int]
-interpret tp input = case parse parser "" input of
-  Left bundle  -> error . fromList $ errorBundlePretty bundle
-  Right source ->
-    execWriter $ runStateT (run (sourceToTape source) False) readerState
-    where readerState = StateState tp
+interpret tp input =
+  case parse parser "" input of
+    Left bundle -> error . fromList $ errorBundlePretty bundle
+    Right source ->
+      execWriter $ runStateT (run (sourceToTape source) False) readerState
+      where readerState = StateState tp
 
 sourceToTape :: Source -> Tape Command
 sourceToTape source = Tape [] (head list) (tail list)
@@ -101,12 +108,11 @@ sourceToTape source = Tape [] (head list) (tail list)
     list = fromJust (nonEmpty source)
 
 updateTape :: Tape Int -> BFState
-updateTape tp = modify' (\s -> s { tape = tp})
+updateTape tp = modify' (\s -> s {tape = tp})
 
 run :: Tape Command -> Bool -> BFState
 run source@(Tape _ middle right) isLoop = do
   tp@(Tape l n r) <- gets tape
-
   case middle of
     MoveRight -> updateTape (moveRight tp)
     MoveLeft  -> updateTape (moveLeft tp)
@@ -115,9 +121,7 @@ run source@(Tape _ middle right) isLoop = do
     Print     -> lift $ tell [n]
     Loop lp   -> run (sourceToTape lp) True
     _         -> return ()
-
   pivot <- getPivot <$> gets tape
-
   if null right
-  then when (isLoop && pivot /= 0) $ run (rewind source) True
-  else run (moveRight source) isLoop
+    then when (isLoop && pivot /= 0) $ run (rewind source) True
+    else run (moveRight source) isLoop
